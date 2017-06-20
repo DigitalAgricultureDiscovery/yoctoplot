@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var mongodb = require('mongodb');
 
 var app = express();
+app.set('port', (process.env.PORT || 5000));
 var server = http.Server(app);
 var io = socketio(server);
 var MongoClient = mongodb.MongoClient;
@@ -73,6 +74,6 @@ app.post('/getData', function (req, res) {
   });
 });
 
-server.listen(3000, function () {
-  console.log('listening on *:3000');
+server.listen(app.get('port'), function () {
+  console.log('Node app is running on port', app.get('port'));
 });
