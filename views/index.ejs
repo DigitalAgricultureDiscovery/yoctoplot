@@ -1,0 +1,32 @@
+<!-- views/index.ejs -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Realtime Plot</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+      .recent-points {
+        border-bottom: 1px solid rgb(240, 240, 240);
+        display: block;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-md-8 col-sm-12">
+        <canvas id="myChart" width="800px" height="400px"></canvas>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <h2>Recent Data Points</h2>
+        <span id="recent0" class="recent-points"></span>
+        <span id="recent1" class="recent-points"></span>
+        <span id="recent2" class="recent-points"></span>
+      </div>
+    <footer></footer>
+    <% include partials/scripts %>
+  </body>
+</html>
