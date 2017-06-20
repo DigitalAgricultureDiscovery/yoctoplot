@@ -9,7 +9,7 @@ var server = http.Server(app);
 var io = socketio(server);
 var MongoClient = mongodb.MongoClient;
 
-var mongoUrl = 'mongodb://localhost:27017/ysensor';
+var mongoUrl = process.env.MONGODB_URI + '/ysensor';
 
 io.on('connection', function (socket) {
   console.log('a user connected');
