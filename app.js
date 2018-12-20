@@ -1,17 +1,19 @@
-var express = require('express');
-var http = require('http');
-var socketio = require('socket.io');
-var bodyParser = require('body-parser');
-var mongodb = require('mongodb');
+const express = require('express');
+const http = require('http');
+const socketio = require('socket.io');
+const bodyParser = require('body-parser');
+const mongodb = require('mongodb');
+const keys = require('./config/keys');
 
-var app = express();
+// Start server listening on port 5000 or the production port
+const app = express();
 app.set('port', (process.env.PORT || 5000));
-var server = http.Server(app);
-var io = socketio(server);
-var MongoClient = mongodb.MongoClient;
+const server = http.Server(app);
 
-var mongoUrl = process.env.MONGODB_URI;
+// Enable socketio for the server
+const io = socketio(server);
 
+// Listen for clients to connect to server
 io.on('connection', function (socket) {
   console.log('a user connected');
   socket.on('disconnect', function () {
@@ -19,6 +21,9 @@ io.on('connection', function (socket) {
   });
 });
 
+// Connect to mongodb database and create a collection
+const MongoClient = mongodb.MongoClient;
+const mongoUrl = keys.mongoURI;
 MongoClient.connect(mongoUrl, function (err, db) {
   if (err) throw err;
   db.createCollection('yhub', function (err, res) {
@@ -30,7 +35,6 @@ MongoClient.connect(mongoUrl, function (err, db) {
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
-
 app.set('view engine', 'ejs');
 
 app.get('/', function (req, res) {
@@ -38,12 +42,12 @@ app.get('/', function (req, res) {
 });
 
 app.post('/', function (req, res) {
-  var data = req.body;
+  let data = req.body;
 
   // replace '.' with '_' in key names
   Object.keys(data).forEach(function (key) {
     if (key.indexOf('.') > -1) {
-      var newKey = key.replace('.', '_');
+      let newKey = key.replace('.', '_');
       data[newKey] = data[key];
       delete data[key];
     }
