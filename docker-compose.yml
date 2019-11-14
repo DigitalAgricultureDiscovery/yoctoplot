@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  app:
+    container_name: yoctoplot-app
+    build: .
+    command: 'yarn start'
+    ports:
+      - '5003:5000'
+    depends_on:
+      - mongo
+    restart: always
+
+  mongo:
+    container_name: yoctoplot-mongo
+    image: mongo
+    volumes:
+      - '${DB_PATH}:/data/db'
+    ports:
+      - '27017:27017'
