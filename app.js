@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const http = require('http');
 const socketio = require('socket.io');
 const bodyParser = require('body-parser');
@@ -56,7 +57,8 @@ app.post('/', function(req, res) {
 
   MongoClient.connect(mongoUrl, function(err, db) {
     if (err) throw err;
-    db.collection('yhub').insertOne(data, function(err, res) {
+    const dbase = db.db('yoctoplot');
+    dbase.collection('yhub').insertOne(data, function(err, res) {
       if (err) throw err;
       console.log('Record inserted into db collection');
       io.emit('update chart', data);
@@ -70,7 +72,8 @@ app.post('/', function(req, res) {
 app.post('/getData', function(req, res) {
   MongoClient.connect(mongoUrl, function(err, db) {
     if (err) throw err;
-    db.collection('yhub')
+    const dbase = db.db('yoctoplot');
+    dbase.collection('yhub')
       .find(
         { timestamp: { $gte: new Date().getTime().toString() } },
         { timestamp: 1, 'LIGHTMK3-76EB4_lightSensor': 1, _id: 0 }
